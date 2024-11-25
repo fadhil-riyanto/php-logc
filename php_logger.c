@@ -1,5 +1,7 @@
 /* php_logger extension for PHP */
 
+#include "zend_API.h"
+#include "zend_frameless_function.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -41,6 +43,20 @@ PHP_FUNCTION(test2)
 
 	RETURN_STR(retval);
 }
+
+
+
+PHP_FUNCTION(test_f)
+{
+	double y;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)	
+		Z_PARAM_DOUBLE(y)
+	ZEND_PARSE_PARAMETERS_END();
+
+	RETURN_DOUBLE(y * 2);
+}
+
 /* }}}*/
 
 /* {{{ PHP_RINIT_FUNCTION */
@@ -62,6 +78,13 @@ PHP_MINFO_FUNCTION(php_logger)
 	php_info_print_table_end();
 }
 /* }}} */
+
+// static const zend_function_entry test_function[] = {
+// 	PHP_FE(test1, arginfo_test1)
+// 	PHP_FE(test2, arginfo_test2)
+// 	PHP_FE(test_f, arginfo_test_f)
+// 	PHP_FE_END
+// }
 
 /* {{{ php_logger_module_entry */
 zend_module_entry php_logger_module_entry = {
