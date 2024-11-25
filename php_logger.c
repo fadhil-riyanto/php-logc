@@ -57,6 +57,18 @@ PHP_FUNCTION(test_f)
 	RETURN_DOUBLE(y * 2);
 }
 
+PHP_FUNCTION(test2arg)
+{
+	long a;
+	long b;
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_LONG(a)
+		Z_PARAM_LONG(b)
+	ZEND_PARSE_PARAMETERS_END();
+
+	RETURN_BOOL(a == b);
+}
+
 /* }}}*/
 
 /* {{{ PHP_RINIT_FUNCTION */
