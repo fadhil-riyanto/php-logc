@@ -1,0 +1,8 @@
+CompileFlags:
+        Add: 
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php"
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php/main"
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php/TSRM"
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php/Zend"
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php/ext"
+                - "-I/home/fadhil_riyanto/php-bin/DEBUG/include/php/ext/date/lib"
