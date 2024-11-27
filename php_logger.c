@@ -57,16 +57,19 @@ PHP_FUNCTION(test_f)
 	RETURN_DOUBLE(y * 2);
 }
 
-PHP_FUNCTION(test2arg)
+PHP_FUNCTION(log_trace)
 {
-	long a;
-	long b;
-	ZEND_PARSE_PARAMETERS_START(2, 2)
-		Z_PARAM_LONG(a)
-		Z_PARAM_LONG(b)
+	zval *data = NULL;
+	uint32_t argc;
+
+	ZEND_PARSE_PARAMETERS_START(1, -1)
+		Z_PARAM_VARIADIC('+', data, argc)
 	ZEND_PARSE_PARAMETERS_END();
 
-	RETURN_BOOL(a == b);
+	php_printf("current data val %d", argc);
+	
+
+	RETURN_NULL();
 }
 
 /* }}}*/
