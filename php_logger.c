@@ -15,6 +15,8 @@
 #include "php_php_logger.h"
 #include "php_logger_arginfo.h"
 
+# define PRINTF_DEBUG(arg) php_printf arg
+
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
 #define ZEND_PARSE_PARAMETERS_NONE() \
@@ -74,6 +76,7 @@ PHP_FUNCTION(log_trace)
 
 	zval *data = NULL;
 	uint32_t argc;
+	
 
 	ZEND_PARSE_PARAMETERS_START(1, -1)
 		Z_PARAM_VARIADIC('+', data, argc)
@@ -100,51 +103,64 @@ PHP_FUNCTION(log_trace)
 			}
 		}
 
+		// PRINTF_DEBUG(("argc - 1: %d\n", argc - 1));
+		// PRINTF_DEBUG(("found: %d\n", found));
+		
 
-		for(int i = 1; i < argc && argc != 1; i++) {
-			argv_total_buf = argv_total_buf + Z_STRLEN(data[i]);
-		}
+		if ((argc - 1) != found) {
+			zend_argument_count_error("%d arguments are required, %d given", found, argc - 1);
 
-		int fmt_size_trim = arg1len - (found * 2);
-		long alloc_mem_len = fmt_size_trim + argv_total_buf;
+			RETURN_NULL();
+		} else {
 
-		// void* allocated_mem = emalloc(alloc_mem_len + 1);
-		zend_string *allocated_mem = zend_string_alloc(alloc_mem_len, 0);
-		parse_handler.main_mem_off = 0;
-
-		parse_handler.current_argv_off = 1; /* argc started from 1, because indexof 0 it was used as format */
-
-		for(int i = 0; i < Z_STRLEN(data[0]); i++) {
-
-			if (Z_STRVAL(data[0])[i] == '%' && i < arg1len) {
-				parse_handler.is_current_use = 1; /* maybe unused */
-				
-				for(int z = 0; z < Z_STRLEN(data[parse_handler.current_argv_off]) &&
-						 parse_handler.current_argv_off < argc; z++) 
-				{
-					/* replace char started by % by actual data */
-
-					ZSTR_VAL(allocated_mem)[parse_handler.main_mem_off] = Z_STRVAL(data[parse_handler.current_argv_off])[z];
-					parse_handler.main_mem_off++;
-
-					
-				}
-
-				/* after operation, current_argv_off incremented by 1 */
-				parse_handler.current_argv_off++;
-				
-			} else {
-				ZSTR_VAL(allocated_mem)[parse_handler.main_mem_off] = Z_STRVAL(data[0])[i];
-				parse_handler.main_mem_off++;
+			for(int i = 1; i < argc && argc != 1; i++) {
+				argv_total_buf = argv_total_buf + Z_STRLEN(data[i]);
 			}
+
+			int fmt_size_trim = arg1len - (found * 2);
+			long alloc_mem_len = fmt_size_trim + argv_total_buf;
+
+			// void* allocated_mem = emalloc(alloc_mem_len + 1);
+			zend_string *allocated_mem = zend_string_alloc(alloc_mem_len, 0);
+			parse_handler.main_mem_off = 0;
+
+			parse_handler.current_argv_off = 1; /* argc started from 1, because indexof 0 it was used as format */
+
+			for(int i = 0; i < Z_STRLEN(data[0]); i++) {
+
+				if (Z_STRVAL(data[0])[i] == '%' && i < arg1len) {
+					parse_handler.is_current_use = 1; /* maybe unused */
+					
+					for(int z = 0; z < Z_STRLEN(data[parse_handler.current_argv_off]) &&
+							parse_handler.current_argv_off < argc; z++) 
+					{
+						/* replace char started by % by actual data */
+
+						ZSTR_VAL(allocated_mem)[parse_handler.main_mem_off] = Z_STRVAL(data[parse_handler.current_argv_off])[z];
+						parse_handler.main_mem_off++;
+
+						
+					}
+
+					/* after operation, current_argv_off incremented by 1 */
+					parse_handler.current_argv_off++;
+					
+				} else {
+					ZSTR_VAL(allocated_mem)[parse_handler.main_mem_off] = Z_STRVAL(data[0])[i];
+					parse_handler.main_mem_off++;
+				}
+			}
+
+			php_printf("%s\n", ZSTR_VAL(allocated_mem));
+
+
+			efree(allocated_mem);
+
+			RETURN_LONG(alloc_mem_len);
 		}
 
-		php_printf("%s\n", ZSTR_VAL(allocated_mem));
 
-
-		efree(allocated_mem);
-
-		RETURN_LONG(alloc_mem_len);
+		
 	}
 	// RETURN_NULL();
 }
