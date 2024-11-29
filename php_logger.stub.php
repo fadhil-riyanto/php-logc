@@ -12,4 +12,4 @@ function test2(string $str = ""): string {}
 
 function test_f(float $str): float {}
 
-function log_trace(int ...$int1): null {}
+function log_trace(string ...$str_n): int {}

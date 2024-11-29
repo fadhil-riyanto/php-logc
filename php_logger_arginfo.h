@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 24eff7ab39f449cb6d3b70c187290f7ad1768d6d */
+ * Stub hash: 03b63f4c5cf23ef7e40ce5e73e895c2778165320 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_test1, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO()
@@ -12,8 +12,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_test_f, 0, 1, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, str, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_log_trace, 0, 0, IS_NULL, 1)
-	ZEND_ARG_VARIADIC_TYPE_INFO(0, int1, IS_LONG, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_log_trace, 0, 0, IS_LONG, 0)
+	ZEND_ARG_VARIADIC_TYPE_INFO(0, str_n, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_FUNCTION(test1);
