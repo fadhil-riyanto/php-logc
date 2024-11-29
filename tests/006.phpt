@@ -4,7 +4,7 @@ log_trace() Simple variadic argc return
 php_logger
 --FILE--
 <?php 
-log_trace(8, 3, 5, 2, 1);
+log_trace("abc % #%", "abc ghi123", "8");
 ?>
 --EXPECT--
-current data val 5
+abc abc ghi123 #8
