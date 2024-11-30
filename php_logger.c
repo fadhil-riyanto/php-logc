@@ -76,23 +76,6 @@ struct php_logger_settings {
 
 struct php_logger_settings shared_php_logger_conf;
 
-PHP_FUNCTION(log_config)
-{
-	long enable_colored = 0;
-	long enable_verbose = 0;
-
-	ZEND_PARSE_PARAMETERS_START(2, 2)
-		Z_PARAM_LONG(enable_colored)
-		Z_PARAM_LONG(enable_verbose)
-		
-	ZEND_PARSE_PARAMETERS_END();
-
-	shared_php_logger_conf.colored = &enable_colored;
-	shared_php_logger_conf.verbose = &enable_verbose;
-
-}
-
-
 
 PHP_FUNCTION(log_trace)
 {
